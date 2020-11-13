@@ -1,7 +1,12 @@
 # partial-AUC-C
 Code for the concordant partial AUC and the partial C statistic 
 
-Usage for Python 3.7 code:
+Instructions:
+Ensure you have a Python 3.7 interpreter.
+Copy files to a local folder.
+Create a subfolder called output.
+Edit the variables at the top of the file test_pAUCc.py as input settings.
+
 python test_pAUCc.py
 
-Edit the variables at the top of the file as input settings.
+Created and tested in PyCharm with a Python 3.7 interpreter.
