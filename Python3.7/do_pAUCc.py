@@ -453,8 +453,6 @@ def getRange_pAUCc(ffpr, ftpr, fthresh, rangeAxis1, rangeEndpoints1, rocRuleLeft
         ix, ixL, ixR = get_Match_or_Interpolation_Points(rstat, endpoint)
 
         if len(ix) == 0:  # if no exact match, then interpolate
-            print(f'Interpolating {rangeAxis1}[{i}] between {rstat[ixL]:0.3f} and {rstat[ixR]:0.3f}')
-            #   with a newly interpolated point at rangeEndpoints0
             rangeEndpoints2[i], rangeEndpoints0[i], perCentFromLeft = \
                 interpolateROC(rstat, ostat, fthresh, ixL, ixR, endpoint)
             if perCentFromLeft > 0.5:
@@ -462,6 +460,8 @@ def getRange_pAUCc(ffpr, ftpr, fthresh, rangeAxis1, rangeEndpoints1, rocRuleLeft
             else:
                 approxIndices0[i] = ixL
             #endif
+            print(f'Interpolating {rangeAxis1}[{i}] between {rstat[ixL]:0.3f} and {rstat[ixR]:0.3f}')
+            #   with a newly interpolated point at rangeEndpoints0
             if rangeAxis1 == FPR:
                 if i == 1:    # right/top
                     pfpr_np = np.delete(pfpr_np, np.arange(ixR, n))
@@ -1175,7 +1175,9 @@ def do_pAUCc(mode,          index,     pAUCrange,
              fpr,           tpr,       thresh,
              fpr_opt,       tpr_opt,   thresh_opt,
              numShowThresh, testNum,   showPlot,
-             showData,      showError, ep         ):
+             showData,      showError, ep,
+             rangeAxis,     useCloseRangePoint):
+
     ''' insert docstring here '''
     # STATUS: INCOMPLETE
 
@@ -1272,10 +1274,41 @@ def do_pAUCc(mode,          index,     pAUCrange,
         rocRuleRight = 'NE'
     #endif
 
-    xrange = pAUCrange
+    # swith pAUCrange to the closest points, if applicable
+    if useCloseRangePoint:
+        if rangeAxis == 'FPR':
+            rstat = ffpr
+            ostat = ftpr
+        else:
+            rstat = ftpr
+            ostat = ffpr
+        #endif
+        for i in [0, 1]:
+            ix, ixL, ixR = get_Match_or_Interpolation_Points(rstat, pAUCrange[i])
+            if len(ix) == 0:  # if no exact match, then use closest point
+                _, __, perCentFromLeft = interpolateROC(rstat, ostat, fthresh, ixL, ixR, pAUCrange[i])
+                if perCentFromLeft > 0.5:
+                    pAUCrange[i] = rstat[ixR]
+                else:
+                    pAUCrange[i] = rstat[ixL]
+                #endif
+            #endif
+        #endfor
+    #endif
+
     # get range and rangeIndices for pAUCc, using full ROC data
-    pfpr, ptpr, yrange, trange, matchedIndices, approxIndices \
-        = getRange_pAUCc(ffpr, ftpr, fthresh, 'FPR', xrange, rocRuleLeft, rocRuleRight)
+    pfpr, ptpr, otherpAUCrange, trange, matchedIndices, approxIndices \
+        = getRange_pAUCc(ffpr, ftpr, fthresh, rangeAxis, pAUCrange, rocRuleLeft, rocRuleRight)
+    if rangeAxis == 'FPR':
+        xrange = pAUCrange
+        yrange = otherpAUCrange
+    else:
+        yrange = pAUCrange
+        xrange = otherpAUCrange
+    #endif
+    #xrange = pAUCrange
+    #pfpr, ptpr, yrange, trange, matchedIndices, approxIndices \
+    #    = getRange_pAUCc(ffpr, ftpr, fthresh, 'FPR', xrange, rocRuleLeft, rocRuleRight)
 
     # Show the partial ROC data
     if showData:
@@ -1400,18 +1433,17 @@ def do_pAUCc(mode,          index,     pAUCrange,
     plabel = get_plabel(fnewlabel, matchedIndices, approxIndices)
     avgBA, simpAvgBA, avgSens, avgSpec  = average_balanced_accuracy_discrete(pfpr, ptpr, plabel)
     print(f"{'avgBA':12s} = {avgBA:0.4f}")
-    #print(f"{'simpAvgBA':12s} = {simpAvgBA:0.4f}")
-    print(f"{'avgSens':12s}   = {avgSens:0.4f}")
-    print(f"{'avgSpec':12s}   = {avgSpec:0.4f}")
+    print(f"{'avgSens':12s} = {avgSens:0.4f}")
+    print(f"{'avgSpec':12s} = {avgSpec:0.4f}")
     extras_dict.update({'avgBA':   avgBA})
     extras_dict.update({'avgSens': avgSens})
     extras_dict.update({'avgSpec': avgSpec})
 
-    P  = len(posScores)
-    N  = len(negScores)
-    aA = average_accuracy_discrete(pfpr, ptpr, N, P)
-    print(f"{'avg A':12s} = {aA:0.4f}")
-    extras_dict.update({'aA': aA})
+    #P  = len(posScores)
+    #N  = len(negScores)
+    #aA = average_accuracy_discrete(pfpr, ptpr, N, P)
+    #print(f"{'avg A':12s} = {aA:0.4f}")
+    #extras_dict.update({'aA': aA})
 
     if xrange[1] == 1:
         PAI = partial_area_index_proxy(pfpr, ptpr)

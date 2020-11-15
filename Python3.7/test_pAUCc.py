@@ -55,17 +55,25 @@
 # see beginning of runtime logic at the end of this file
 
 # runtime parameters
-useFile             = False
-fileName            = 'input-matlab/result581.mat'
-#fileName            = 'input-matlab/result536.mat'
-filePAUCranges      = [[0, 0.33],[0.33, 0.66], [0.66, 1.0]]
-#filePAUCranges      = [[0, 0.08],[0.08, 0.2], [0.2, 1.0]]
+
+# choose one of the following as input (file supercedes others if multiple):
+useFile             = True
+useSingleTestVector = False
 useAllTestVectors   = False
-useSingleTestVector = True
-singleTestVectorNum = 1
-#costs              = {}
-costs               = dict(cFP=1, cFN=1, cTP=0, cTN=0)
-rates               = True
+
+# specify corresponding input parameters
+fileName            = 'input-matlab/result581.mat'  # a matlab file (or future: csv file) for input
+singleTestVectorNum = 1  # which of 11 test vectors from the function get_ROC_test_scores_labels_ranges below
+
+# choose data science parameters
+rangeAxis           = 'FPR'  # examine ranges (next) by FPR or TPR
+filePAUCranges      = [[0, 0.33], [0.33, 0.67], [0.67, 1.0]]  # ranges, as few or many as you like
+useCloseRangePoint  = True   # automatically alter the ranges to match with the closest points in data
+costs               = dict(cFP=1, cFN=1, cTP=0, cTN=0)  # specify relative costs explicitly (default shown)
+#costs              = {}                                # use the default costs
+rates               = False                             # treat costs as rates, e.g. cFPR (default False)
+
+# choose what to show
 sanityCheckWholeAUC = True
 showPlot            = True
 showData            = False
@@ -313,7 +321,7 @@ def get_ROC_test_scores_labels_ranges(testNum):
 #enddef
 
 def test_pAUCc(testNum=1, costs={}, sanityCheckWholeAUC=True, showPlot=True, showData=True,
-               showError=True, fileName='', filePAUCranges={}):
+               showError=True, fileName='', filePAUCranges={}, rangeAxis='FPR', useCloseRangePoint=False):
 
     # choose the fileNum to use in the logfile
     if fileName == '':
@@ -433,7 +441,8 @@ def test_pAUCc(testNum=1, costs={}, sanityCheckWholeAUC=True, showPlot=True, sho
                           fpr=fpr,                  tpr=tpr,             thresh=thresholds,
                           fpr_opt=fpr_opt,          tpr_opt=tpr_opt,     thresh_opt=thresh_opt,
                           numShowThresh=showThresh, testNum=fileNum,     showPlot=showPlot,
-                          showData=showData,        showError=showError, ep=ep)
+                          showData=showData,        showError=showError, ep=ep,
+                          rangeAxis=rangeAxis,      useCloseRangePoint=useCloseRangePoint)
         passALL = passALL and passEQ
         if index > 0:
             cDelta_sum = cDelta_sum + cDelta
@@ -463,7 +472,8 @@ if   useFile == True:
     passTest = test_pAUCc(testNum=singleTestVectorNum, costs=costs,
                           sanityCheckWholeAUC=sanityCheckWholeAUC,
                           showPlot=showPlot, showData=showData, showError=showError,
-                          fileName=fileName, filePAUCranges=filePAUCranges)
+                          fileName=fileName, filePAUCranges=filePAUCranges,
+                          rangeAxis=rangeAxis, useCloseRangePoint=useCloseRangePoint)
 elif useSingleTestVector == True:
         passTest = test_pAUCc(testNum=singleTestVectorNum, costs=costs,
                           sanityCheckWholeAUC=sanityCheckWholeAUC,
