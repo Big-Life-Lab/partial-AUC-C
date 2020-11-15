@@ -9,6 +9,8 @@ Edit the variables at the top of the file test_pAUCc.py as input settings.
 
 python test_pAUCc.py
 
+The program will block (wait) for you to close each plot generated and each plot is saved automatically along with the log file to the output folder using the test number from the test vector or the input file.
+
 ## Explanation of variables
   
 ### Choose one of the following as input:  
