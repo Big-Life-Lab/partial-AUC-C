@@ -1,13 +1,14 @@
 # partial-AUC-C
 Code for the concordant partial AUC and the partial C statistic  
 by André Carrington and Yusuf Sheikh  
+
 Citation: André M Carrington, Paul W Fieguth, Hammad Qazi, Andreas Holzinger, Helen H Chen, Franz Mayr, and Douglas G Manuel. A new concordant partial auc and partial c statistic for imbalanced data in the evaluation of machine learning algorithms. BMC Medical Informatics and Decision Making, 20(1):1–12, 2020.
 
 ## Instructions
 Ensure you have a Python 3.7 interpreter.  
 Copy files in Python3.7 folder to a local folder.  
 Create a subfolder called output.  
-Edit the variables at the top of the file test_pAUCc.py as input settings.  
+Edit the variables (explained below) at the top of the file test_pAUCc.py as input settings.  
 
 python test_pAUCc.py
 
