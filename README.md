@@ -1,5 +1,6 @@
 # partial-AUC-C
-Code for the concordant partial AUC and the partial C statistic 
+Code for the concordant partial AUC and the partial C statistic  
+by André Carrington and Yusuf Sheikh  
 
 ## Instructions
 Ensure you have a Python 3.7 interpreter.  
