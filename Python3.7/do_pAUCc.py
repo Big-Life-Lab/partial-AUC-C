@@ -27,7 +27,7 @@
 # Functions:
 #    c_statistic
 #    average_accuracy_discrete
-#    average_balanced_accuracy_discrete
+#    average_measures_discrete
 #    concordant_partial_AUC
 #    partial_c_statistic
 #    partial_area_index_proxy
@@ -92,22 +92,22 @@ def c_statistic(posScores, negScores):
     return c
 #enddef
 
-def average_accuracy_discrete(pfpr, ptpr, N, P):
-    # This function requires points generated from getFullROC function
-    pi_pos = P / (P+N)
-    pi_neg = N / (P+N)
-    aA = 0
-    n   = len(pfpr)
-    for fpr, tpr in zip(pfpr, ptpr):
-        A  = pi_neg * (1-fpr) + pi_pos * tpr
-        #print(f"{'A':12s} = {A:0.4f}")
-        aA = aA + A
-    #endfor
-    aA = aA / n
-    return aA
+# def average_accuracy_discrete(pfpr, ptpr, N, P):
+#     # This function requires points generated from getFullROC function
+#     pi_pos = P / (P+N)
+#     pi_neg = N / (P+N)
+#     aA = 0
+#     n   = len(pfpr)
+#     for fpr, tpr in zip(pfpr, ptpr):
+#         A  = pi_neg * (1-fpr) + pi_pos * tpr
+#         #print(f"{'A':12s} = {A:0.4f}")
+#         aA = aA + A
+#     #endfor
+#     aA = aA / n
+#     return aA
 #enddef
 
-def average_balanced_accuracy_discrete(pfpr, ptpr, plabel):
+def average_measures_discrete(pfpr, ptpr, plabel):
     # This function requires points generated from the getFullROC function
     avgBA     = 0
     simpAvgBA = 0
@@ -1431,11 +1431,11 @@ def do_pAUCc(mode,          index,     pAUCrange,
 
 
     plabel = get_plabel(fnewlabel, matchedIndices, approxIndices)
-    avgBA, simpAvgBA, avgSens, avgSpec  = average_balanced_accuracy_discrete(pfpr, ptpr, plabel)
-    print(f"{'avgBA':12s} = {avgBA:0.4f}")
+    avgBA, simpAvgBA, avgSens, avgSpec  = average_measures_discrete(pfpr, ptpr, plabel)
+    #print(f"{'avgBA':12s} = {avgBA:0.4f}")
     print(f"{'avgSens':12s} = {avgSens:0.4f}")
     print(f"{'avgSpec':12s} = {avgSpec:0.4f}")
-    extras_dict.update({'avgBA':   avgBA})
+    #extras_dict.update({'avgBA':   avgBA})
     extras_dict.update({'avgSens': avgSens})
     extras_dict.update({'avgSpec': avgSpec})
 
