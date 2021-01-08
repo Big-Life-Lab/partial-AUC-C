@@ -26,7 +26,6 @@
 #
 # Functions:
 #    c_statistic
-#    average_accuracy_discrete
 #    average_measures_discrete
 #    concordant_partial_AUC
 #    partial_c_statistic
@@ -92,32 +91,13 @@ def c_statistic(posScores, negScores):
     return c
 #enddef
 
-# def average_accuracy_discrete(pfpr, ptpr, N, P):
-#     # This function requires points generated from getFullROC function
-#     pi_pos = P / (P+N)
-#     pi_neg = N / (P+N)
-#     aA = 0
-#     n   = len(pfpr)
-#     for fpr, tpr in zip(pfpr, ptpr):
-#         A  = pi_neg * (1-fpr) + pi_pos * tpr
-#         #print(f"{'A':12s} = {A:0.4f}")
-#         aA = aA + A
-#     #endfor
-#     aA = aA / n
-#     return aA
-#enddef
-
 def average_measures_discrete(pfpr, ptpr, plabel):
     # This function requires points generated from the getFullROC function
-    avgBA     = 0
-    simpAvgBA = 0
     sumSensFP = 0
     sumSpecTP = 0
     delx      = 0  # the weight or area in this case is a discrete count
     dely      = 0  # the weight or area in this case is a discrete count
 
-    n         = len(pfpr)
-    index     = 0
     #for fpr, tpr, label in zip(afpr, atpr, alabel):
     for fpr, tpr, label in zip(pfpr, ptpr, plabel):
         if label == 0 and tpr > 0:        # neg = FP. for sens: the first point has no area/weight
@@ -127,10 +107,6 @@ def average_measures_discrete(pfpr, ptpr, plabel):
             sumSpecTP = sumSpecTP + (1-fpr)
             dely      = dely + 1
         #endif
-        simpBA    = 0.5 * (1-fpr) + 0.5 * tpr
-        #print(f"{'BA':12s} = {BA:0.4f}")
-        simpAvgBA = simpAvgBA + simpBA
-        index     = index + 1
     #endfor
     if delx > 0:
         avgSensFP = (1/delx) * sumSensFP
@@ -142,9 +118,7 @@ def average_measures_discrete(pfpr, ptpr, plabel):
     else:
         avgSpecTP = 0
     #endif
-    avgBA     = (1/2) * (avgSensFP + avgSpecTP)
-    simpAvgBA = simpAvgBA / n
-    return avgBA, simpAvgBA, avgSensFP, avgSpecTP
+    return avgSensFP, avgSpecTP
 #enddef
 
 def concordant_partial_AUC(pfpr, ptpr):
@@ -1431,19 +1405,11 @@ def do_pAUCc(mode,          index,     pAUCrange,
 
 
     plabel = get_plabel(fnewlabel, matchedIndices, approxIndices)
-    avgBA, simpAvgBA, avgSens, avgSpec  = average_measures_discrete(pfpr, ptpr, plabel)
-    #print(f"{'avgBA':12s} = {avgBA:0.4f}")
+    avgSens, avgSpec  = average_measures_discrete(pfpr, ptpr, plabel)
     print(f"{'avgSens':12s} = {avgSens:0.4f}")
     print(f"{'avgSpec':12s} = {avgSpec:0.4f}")
-    #extras_dict.update({'avgBA':   avgBA})
     extras_dict.update({'avgSens': avgSens})
     extras_dict.update({'avgSpec': avgSpec})
-
-    #P  = len(posScores)
-    #N  = len(negScores)
-    #aA = average_accuracy_discrete(pfpr, ptpr, N, P)
-    #print(f"{'avg A':12s} = {aA:0.4f}")
-    #extras_dict.update({'aA': aA})
 
     if xrange[1] == 1:
         PAI = partial_area_index_proxy(pfpr, ptpr)
