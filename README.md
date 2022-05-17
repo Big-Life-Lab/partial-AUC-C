@@ -1,14 +1,18 @@
 # partial-AUC-C
-Code for the concordant partial AUC and the partial C statistic  
-by André Carrington and Yusuf Sheikh  
+Code for the concordant partial AUC and the partial C statistic [1]  
+Code written by André Carrington and Yusuf Sheikh
 
-This package, partial-AUC-C has been superceded by the (refactored) deepROC package (and DeepROC class) available from 'pip install deeproc' or Github:  
+This package, partial-AUC-C has been superceded by use of the DeepROC class in the deepROC package, from 'pip install deeproc' or Github here:  
 https://pypi.org/project/deeproc/  
 https://github.com/Big-Life-Lab/deepROC  
+  
 http://deeproc.org  
   
-Citation: André M Carrington, Paul W Fieguth, Hammad Qazi, Andreas Holzinger, Helen H Chen, Franz Mayr, and Douglas G Manuel. A new concordant partial AUC and partial C statistic for imbalanced data in the evaluation of machine learning algorithms. BMC Medical Informatics and Decision Making, 20(1):1–12, 2020.
-
+Citations:  
+[1] Carrington AM, Fieguth PW, Qazi H, Holzinger A, Chen HH, Mayr F and Manuel DG. A new concordant partial AUC and partial c statistic for imbalanced data in the evaluation of machine learning algorithms, BMC Medical Informatics and Decision Making 20, 4 (2020) doi:10.1186/s12911-019-1014-6  
+  
+[2] Carrington AM, Manuel DG, Fieguth PW, Ramsay T, Osmani V, Wernly B, Bennett C, Hawken S, McInnes M, Magwood O, Sheikh Y, Holzinger A. Deep ROC Analysis and AUC as Balanced Average Accuracy Deep ROC analysis and AUC as balanced average accuracy for improved classifier selection, audit and explanation. IEEE Transactions on Pattern Analysis and Machine Intelligence, Early Access, January 25, 2022. doi:10.1109/TPAMI.2022.3145392  
+  
 ## Instructions
 Ensure you have a Python 3.7 interpreter.  
 Copy files in Python3.7 folder to a local folder.  
