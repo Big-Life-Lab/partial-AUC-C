@@ -5,7 +5,8 @@ by André Carrington and Yusuf Sheikh
 This package, partial-AUC-C has been superceded by the (refactored) deepROC package (and DeepROC class) available from 'pip install deeproc' or Github:  
 https://pypi.org/project/deeproc/  
 https://github.com/Big-Life-Lab/deepROC  
-
+http://deeproc.org  
+  
 Citation: André M Carrington, Paul W Fieguth, Hammad Qazi, Andreas Holzinger, Helen H Chen, Franz Mayr, and Douglas G Manuel. A new concordant partial AUC and partial C statistic for imbalanced data in the evaluation of machine learning algorithms. BMC Medical Informatics and Decision Making, 20(1):1–12, 2020.
 
 ## Instructions
