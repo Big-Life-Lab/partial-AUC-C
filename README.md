@@ -6,7 +6,7 @@ This package, partial-AUC-C has been superceded by use of the DeepROC class in t
 https://pypi.org/project/deeproc/  
 https://github.com/Big-Life-Lab/deepROC  
   
-http://deeproc.org  
+Some general introductory information is found here: http://deeproc.org  
   
 Citations:  
 [1] Carrington AM, Fieguth PW, Qazi H, Holzinger A, Chen HH, Mayr F and Manuel DG. A new concordant partial AUC and partial c statistic for imbalanced data in the evaluation of machine learning algorithms, BMC Medical Informatics and Decision Making 20, 4 (2020) doi:10.1186/s12911-019-1014-6  
