@@ -2,7 +2,7 @@
 Code for the concordant partial AUC and the partial C statistic  
 by André Carrington and Yusuf Sheikh  
 
-This package, partial-AUC-C has been superceded by the (refactored) deepROC package available from 'pip install deeproc' or Github:
+This package, partial-AUC-C has been superceded by the (refactored) deepROC package (and DeepROC class) available from 'pip install deeproc' or Github:  
 https://pypi.org/project/deeproc/  
 https://github.com/Big-Life-Lab/deepROC  
 
